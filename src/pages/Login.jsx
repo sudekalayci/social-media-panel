@@ -19,10 +19,10 @@ const Login = () => {
 
     if (email === "customer@gmail.com") {
       setRole("customer");
-      navigate("/customer");
+      navigate("/customer"); // varsayılan müşteri sayfası
     } else if (email === "superadmin@gmail.com") {
       setRole("admin");
-      navigate("/admin");
+      navigate("/admin/dashboard"); // ✅ gerçek admin panel sayfası
     } else {
       alert("E-posta geçersiz");
     }
@@ -31,10 +31,17 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#293c8f] to-[#626366] px-4">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
+        {/* Logo */}
         <div className="flex justify-center mb-6">
           <img src={logo} alt="AIF Digital Solutions" className="h-14" />
         </div>
-        <h2 className="mb-6 text-center text-2xl font-bold text-gray-700">Sosyal Medya Yönetim Platformu</h2>
+
+        {/* Başlık */}
+        <h2 className="mb-6 text-center text-2xl font-bold text-gray-700">
+          Sosyal Medya Yönetim Platformu
+        </h2>
+
+        {/* Form */}
         <form onSubmit={handleLogin} className="space-y-5">
           <div>
             <label className="block text-sm font-medium text-gray-700">E-posta</label>
@@ -60,7 +67,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full rounded bg-indigo-600 py-2 text-white hover:bg-indigo-700"
+            className="w-full rounded bg-indigo-600 py-2 text-white hover:bg-indigo-700 transition duration-200"
           >
             Giriş Yap
           </button>
