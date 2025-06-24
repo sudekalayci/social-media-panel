@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const steps = [
   "Müşteri Seç",
@@ -8,14 +9,15 @@ const steps = [
 ];
 
 const CreatePostStep4 = ({ formData, onBack, onReset }) => {
+  const navigate = useNavigate();
+
   const [scheduledTime, setScheduledTime] = useState(() => {
     const now = new Date();
     now.setHours(now.getHours() + 1);
     return now.toISOString().slice(0, 16);
   });
 
-  // ❗️Sadece ilk render'da platformları al
-  const [selectedPlatforms] = useState(() =>
+  const [selectedPlatforms] = useState(
     formData.connectedAccounts?.map((acc) => acc.platform) || []
   );
 
@@ -55,6 +57,10 @@ const CreatePostStep4 = ({ formData, onBack, onReset }) => {
     );
 
     onReset();
+
+    if (!isDraft) {
+      navigate("/admin/posts");
+    }
   };
 
   return (
@@ -113,9 +119,7 @@ const CreatePostStep4 = ({ formData, onBack, onReset }) => {
         <p className="text-sm font-medium text-gray-700">Paylaşılacak Platformlar</p>
         <ul className="list-disc list-inside text-gray-700 text-sm">
           {selectedPlatforms.length > 0 ? (
-            selectedPlatforms.map((platform, idx) => (
-              <li key={idx}>{platform}</li>
-            ))
+            selectedPlatforms.map((platform, idx) => <li key={idx}>{platform}</li>)
           ) : (
             <li className="text-red-500">Platform seçilmemiş.</li>
           )}

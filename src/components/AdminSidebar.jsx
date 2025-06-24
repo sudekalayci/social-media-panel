@@ -20,7 +20,7 @@ const menuItems = [
   { label: "Gönderi Oluştur", icon: <MdAddCircleOutline />, to: "/admin/create-post" },
   { label: "Takvim", icon: <MdCalendarToday />, to: "/admin/calendar" },
   { label: "Müşteriler", icon: <MdPeople />, to: "/admin/customers" },
-  { label: "Kullanıcılar", icon: <MdManageAccounts />, to: "/admin/users" },
+
 ];
 
 const AdminSidebar = () => {

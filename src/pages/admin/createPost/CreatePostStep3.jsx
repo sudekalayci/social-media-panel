@@ -1,19 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaUserCircle, FaHeart, FaRegComment, FaPaperPlane } from "react-icons/fa";
 
-const steps = [
-  "Müşteri Seç",
-  "Platformları Seç",
-  "İçerik Oluştur",
-  "Planla ve Gönder",
-];
+const steps = ["Müşteri Seç", "Platformları Seç", "İçerik Oluştur", "Planla ve Gönder"];
 
 const CreatePostStep3 = ({ formData, setFormData, onBack, onNext }) => {
   const [platformData, setPlatformData] = useState(
     formData.platformData || {
-      instagram: { overrideTitle: "", overrideContent: "", hashtags: "", mentions: "" },
+      instagram: {
+        overrideTitle: "",
+        overrideContent: "",
+        hashtags: "",
+        mentions: "",
+      },
     }
   );
+
+  useEffect(() => {
+    if (formData.platformData) {
+      setPlatformData(formData.platformData);
+    }
+  }, [formData.platformData]);
 
   const handleChange = (field, value) => {
     setPlatformData((prev) => ({
@@ -33,14 +39,15 @@ const CreatePostStep3 = ({ formData, setFormData, onBack, onNext }) => {
     onNext();
   };
 
-  const { overrideTitle, overrideContent, hashtags, mentions } = platformData.instagram;
+  const { overrideTitle, overrideContent, hashtags, mentions } =
+    platformData.instagram || {};
   const title = overrideTitle || formData.title;
   const content = overrideContent || formData.content;
   const finalHashtags = hashtags || formData.hashtags;
   const finalMentions = mentions || formData.mentions;
 
   return (
-    <div className="">
+    <div>
       {/* Başlık ve açıklama */}
       <div>
         <h1 className="text-3xl font-bold mb-2 text-gray-900">Yeni Yazı Oluştur</h1>
@@ -56,10 +63,18 @@ const CreatePostStep3 = ({ formData, setFormData, onBack, onNext }) => {
           const isActive = step === 3;
           return (
             <div key={index} className="flex flex-col items-center flex-1">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${isActive ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-600"}`}>
+              <div
+                className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${
+                  isActive ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-600"
+                }`}
+              >
                 {step}
               </div>
-              <span className={`text-xs mt-1 text-center ${isActive ? "text-indigo-600 font-medium" : "text-gray-400"}`}>
+              <span
+                className={`text-xs mt-1 text-center ${
+                  isActive ? "text-indigo-600 font-medium" : "text-gray-400"
+                }`}
+              >
                 {label}
               </span>
             </div>
@@ -164,7 +179,7 @@ const CreatePostStep3 = ({ formData, setFormData, onBack, onNext }) => {
           onClick={handleNext}
           className="px-6 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
         >
-          Sonraki: Planlama ve Yayınlama
+          Sonraki: Planla ve Gönder
         </button>
       </div>
     </div>

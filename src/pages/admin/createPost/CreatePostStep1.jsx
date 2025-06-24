@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import {
   FaInstagram,
-  FaTwitter,
   FaLinkedin,
   FaTiktok,
   FaYoutube,
 } from "react-icons/fa";
 
+const XIcon = () => (
+  <span className="text-black font-bold text-xl select-none">X</span>
+);
+
 const platformIcons = {
   Instagram: <FaInstagram className="text-pink-500 text-xl" />,
-  Twitter: <FaTwitter className="text-blue-400 text-xl" />,
+  X: <XIcon />,  // Burada Twitter yerine XIcon kullanıldı
   LinkedIn: <FaLinkedin className="text-blue-700 text-xl" />,
-  "TikTok": <FaTiktok className="text-black text-xl" />,
-  "YouTube": <FaYoutube className="text-red-600 text-xl" />,
+  TikTok: <FaTiktok className="text-black text-xl" />,
+  YouTube: <FaYoutube className="text-red-600 text-xl" />,
 };
 
 const platforms = [
   "Instagram",
   "LinkedIn",
-  "Twitter",
+  "X",
   "TikTok",
   "YouTube",
 ];

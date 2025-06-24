@@ -1,20 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const steps = [
-  "Müşteri Seç",
-  "Platformları Seç",
-  "İçerik Oluştur",
-  "Planla ve Gönder"
-];
+const steps = ["Müşteri Seç", "Platformları Seç", "İçerik Oluştur", "Planla ve Gönder"];
 
-const CreatePostStep2 = ({ onBack, onNext, formData, setFormData }) => {
+const CreatePostStep2 = ({ formData, setFormData, onBack, onNext }) => {
   const [localData, setLocalData] = useState({
     title: formData.title || "",
     content: formData.content || "",
     hashtags: formData.hashtags || "",
     mentions: formData.mentions || "",
-    media: null,
+    media: formData.media || null,
   });
+
+  useEffect(() => {
+    setLocalData({
+      title: formData.title || "",
+      content: formData.content || "",
+      hashtags: formData.hashtags || "",
+      mentions: formData.mentions || "",
+      media: formData.media || null,
+    });
+  }, [formData]);
 
   const handleChange = (field, value) => {
     setLocalData((prev) => ({ ...prev, [field]: value }));
@@ -35,7 +40,7 @@ const CreatePostStep2 = ({ onBack, onNext, formData, setFormData }) => {
   };
 
   return (
-    <div className="">
+    <div>
       {/* Başlık ve açıklama */}
       <div>
         <h1 className="text-3xl font-bold mb-2 text-gray-900">Yeni Yazı Oluştur</h1>
@@ -113,9 +118,7 @@ const CreatePostStep2 = ({ onBack, onNext, formData, setFormData }) => {
         </div>
 
         <div>
-          <label className="block text-gray-700 font-medium mb-1">
-            Bahs -eder
-          </label>
+          <label className="block text-gray-700 font-medium mb-1">Bahs -eder</label>
           <input
             type="text"
             placeholder="@username @mention"
@@ -126,9 +129,7 @@ const CreatePostStep2 = ({ onBack, onNext, formData, setFormData }) => {
         </div>
 
         <div>
-          <label className="block text-gray-700 font-medium mb-1">
-            Fotoğraf/Video Yükle
-          </label>
+          <label className="block text-gray-700 font-medium mb-1">Fotoğraf/Video Yükle</label>
           <input
             type="file"
             accept="image/*,video/*"
@@ -155,7 +156,7 @@ const CreatePostStep2 = ({ onBack, onNext, formData, setFormData }) => {
           onClick={handleNext}
           className="px-6 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
         >
-          Sonraki: Planlama
+          Sonraki: İçerik Oluştur
         </button>
       </div>
     </div>

@@ -9,7 +9,7 @@ import Posts from "./pages/admin/Posts";
 import CreatePost from "./pages/admin/createPost/CreatePost";
 import Calendar from "./pages/admin/Calendar";
 import Customers from "./pages/admin/Customers";
-import Users from "./pages/admin/Users";
+
 
 function App() {
   return (
@@ -34,7 +34,7 @@ function App() {
             <Route path="create-post" element={<CreatePost />} />
             <Route path="calendar" element={<Calendar />} />
             <Route path="customers" element={<Customers />} />
-            <Route path="users" element={<Users />} />
+            
           </Route>
         </Routes>
       </Router>
