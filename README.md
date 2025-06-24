@@ -1,12 +1,30 @@
-# React + Vite
+# Sosyal Medya Paneli
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bu proje, sosyal medya platformları için bir yönetim paneli uygulamasıdır. React ve Vite kullanılarak geliştirilmiştir.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Kurulum
 
-## Expanding the ESLint configuration
+```bash
+npm install
+```
+```bash
+npm run dev
+```
+```bash
+npm run build
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Geliştirme Ortamı
+
+- React
+- Vite
+- ESLint
+- Tailwind CSS
+
+## Demo Giriş Bilgileri
+
+- E-posta: superadmin@gmail.com
+- Şifre: demo123
+
+
