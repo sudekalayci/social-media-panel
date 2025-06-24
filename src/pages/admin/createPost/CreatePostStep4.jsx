@@ -17,16 +17,18 @@ const CreatePostStep4 = ({ formData, onBack, onReset }) => {
     return now.toISOString().slice(0, 16);
   });
 
-  const [selectedPlatforms] = useState(
-    formData.connectedAccounts?.map((acc) => acc.platform) || []
-  );
+  // 1. adım platformları direkt alınıyor
+  const selectedPlatforms = formData.connectedAccounts
+    ? formData.connectedAccounts.map((acc) => acc.platform)
+    : [];
 
   const handleSave = (type) => {
     const isDraft = type === "draft";
     const isPublish = type === "publish";
 
-    if (!isDraft && (!scheduledTime || selectedPlatforms.length === 0)) {
-      alert("Lütfen zaman seçin ve en az bir platform seçin.");
+    // Platform seçimi kontrolü kaldırıldı, sadece zaman kontrolü yapılıyor
+    if (!isDraft && !scheduledTime) {
+      alert("Lütfen zaman seçin.");
       return;
     }
 
@@ -64,11 +66,11 @@ const CreatePostStep4 = ({ formData, onBack, onReset }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-sm space-y-10">
+      <div className="bg-white space-y-10">
       {/* Başlık */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Yeni Yazı Oluştur</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-gray-500 ">
           Birden fazla sosyal medya platformunda içerik oluşturun ve planlayın.
         </p>
       </div>
@@ -119,9 +121,12 @@ const CreatePostStep4 = ({ formData, onBack, onReset }) => {
         <p className="text-sm font-medium text-gray-700">Paylaşılacak Platformlar</p>
         <ul className="list-disc list-inside text-gray-700 text-sm">
           {selectedPlatforms.length > 0 ? (
-            selectedPlatforms.map((platform, idx) => <li key={idx}>{platform}</li>)
+            selectedPlatforms.map((platform, idx) => (
+              <li key={idx}>{platform}</li>
+            ))
           ) : (
-            <li className="text-red-500">Platform seçilmemiş.</li>
+            // Burada artık boş olsa bile uyarı gösterilmiyor
+            null
           )}
         </ul>
       </div>

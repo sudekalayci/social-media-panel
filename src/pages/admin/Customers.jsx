@@ -87,7 +87,7 @@ const Customers = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-8 font-sans">
+      <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-10">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl font-bold">Müşteri Yönetimi</h1>
         <button
