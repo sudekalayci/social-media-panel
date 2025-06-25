@@ -17,10 +17,11 @@ const Login = () => {
       return;
     }
 
-    if (email === "customer@gmail.com") {
-      setRole("customer");
-      navigate("/customer"); // varsayılan müşteri sayfası
-    } else if (email === "superadmin@gmail.com") {
+  if (email === "customer@gmail.com") {
+  setRole("customer");
+  navigate("/customer"); // ✅ DOĞRU PATH
+}
+ else if (email === "superadmin@gmail.com") {
       setRole("admin");
       navigate("/admin/dashboard"); // ✅ gerçek admin panel sayfası
     } else {

@@ -1,35 +1,32 @@
-import { NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 import logo from "../assets/aifdigitalLogo.svg";
 import {
   MdDashboard,
   MdPostAdd,
-  MdAddCircleOutline,
   MdCalendarToday,
-  MdPeople,
-  MdManageAccounts,
   MdLogout,
   MdMenu,
-  MdClose
+  MdClose,
 } from "react-icons/md";
 import { useState } from "react";
 
 const menuItems = [
-  { label: "Panel", icon: <MdDashboard />, to: "/admin/dashboard" },
-  { label: "Gönderiler", icon: <MdPostAdd />, to: "/admin/posts" },
-  { label: "Gönderi Oluştur", icon: <MdAddCircleOutline />, to: "/admin/create-post" },
-  { label: "Takvim", icon: <MdCalendarToday />, to: "/admin/calendar" },
-  { label: "Müşteriler", icon: <MdPeople />, to: "/admin/customers" },
+  { label: "Panel", icon: <MdDashboard />, to: "/customer" },
+  { label: "Gönderi Ekle", icon: <MdPostAdd />, to: "/customer/post" },
+  { label: "Gönderiler", icon: <MdPostAdd />, to: "/customer/posts" },
+  { label: "Takvim", icon: <MdCalendarToday />, to: "/customer/calendar" },
 
 ];
 
-const AdminSidebar = () => {
+const CustomerSidebar = () => {
   const { setRole } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     setRole(null);
-    window.location.href = "/";
+    navigate("/");  // Burada React Router kullanıyoruz
   };
 
   return (
@@ -39,6 +36,7 @@ const AdminSidebar = () => {
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="text-2xl text-gray-700 focus:outline-none"
+          aria-label="Toggle menu"
         >
           {isOpen ? <MdClose /> : <MdMenu />}
         </button>
@@ -47,13 +45,13 @@ const AdminSidebar = () => {
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 z-40 h-full w-64 bg-white border-r border-gray-200 shadow-sm flex flex-col transform transition-transform duration-300
-        ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+          ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
         {/* Üst - Logo */}
         <div className="pt-16 md:pt-6 px-6 mb-4">
           <img src={logo} alt="AIF Digital Solutions" className="h-10 mb-4" />
           <div className="flex items-center gap-2 text-lg md:text-xl font-semibold tracking-wide text-gray-800">
-            Admin Paneli
+            Müşteri Paneli
           </div>
         </div>
 
@@ -93,4 +91,4 @@ const AdminSidebar = () => {
   );
 };
 
-export default AdminSidebar;
+export default CustomerSidebar;
