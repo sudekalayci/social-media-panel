@@ -67,12 +67,11 @@ const Customer = () => {
   ];
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-10 max-w-5xl mx-auto mt-8">
-      <header>
-        <h1 className="text-3xl font-bold mb-2">Hoşgeldin Müşteri!</h1>
-        <p className="text-gray-600">Sosyal medya gönderilerinizi buradan takip edin.</p>
+     <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-10">
+      <header className="text-left space-y-2">
+          <h1 className="text-4xl font-bold mb-1">Panel</h1>
+          <p className="text-gray-600">Tüm sosyal medya gönderilerinizi yönetin</p>
       </header>
-
       {/* İstatistikler */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {stats.map((stat, i) => {

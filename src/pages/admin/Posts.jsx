@@ -9,11 +9,13 @@ import {
   FaXTwitter,
 } from "react-icons/fa6";
 import { MdDelete, MdVisibility, MdEdit, MdClose } from "react-icons/md";
+import { FaTwitter } from "react-icons/fa";
 
 Modal.setAppElement("#root");
 
 const platformIcons = {
   Instagram: <FaInstagram className="text-pink-500 text-xl" />,
+  Twitter: <FaTwitter className="text-blue-600 text-xl" />,
   LinkedIn: <FaLinkedin className="text-blue-700 text-xl" />,
   YouTube: <FaYoutube className="text-red-600 text-xl" />,
   X: <FaXTwitter className="text-black text-xl" />,
@@ -86,16 +88,18 @@ export default function Posts() {
   const customers = Array.from(new Set(posts.map((p) => p.customer).filter(Boolean)));
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-6">
-      <div className="max-w-7xl mx-auto bg-white shadow-xl rounded-3xl p-8">
+    <div className="min-h-screen py-6 px-6 bg-white border border-gray-200 rounded-xl shadow-sm space-y-10">
+      <div>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-6">
-          <h1 className="text-4xl font-extrabold text-gray-900">Admin Gönderi Paneli</h1>
-
+         <header className="text-left space-y-2">
+          <h1 className="text-4xl font-bold mb-1">Gönderiler</h1>
+          <p className="text-gray-600">Tüm sosyal medya gönderilerinizi yönetin</p>
+        </header>
           <button
             onClick={() => (window.location.href = "/admin/create-post")}
             className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl shadow-lg hover:from-indigo-700 hover:to-purple-700 transition"
           >
-            Yazı Oluştur
+            Gönderi Ekle
           </button>
         </div>
 
@@ -267,25 +271,10 @@ export default function Posts() {
     <div className="grid grid-cols-2 gap-6 mb-6 text-gray-700 text-sm font-semibold">
       <div className="space-y-2">
         <p>
-          <span className="text-gray-900">Planlanan:</span>{" "}
-          {modalPost.scheduledTime
-            ? new Date(modalPost.scheduledTime).toLocaleString("tr-TR", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-              })
-            : "-"}
-        </p>
-        <p>
           <span className="text-gray-900">Müşteri:</span> {modalPost.customer || "-"}
         </p>
       </div>
       <div className="space-y-2">
-        <p>
-          <span className="text-gray-900">Oluşturan:</span> {modalPost.creator || "Bilinmiyor"}
-        </p>
         <p>
           <span className="text-gray-900">Durum:</span> {modalPost.status}
         </p>
@@ -367,24 +356,6 @@ export default function Posts() {
         className="bg-blue-600 text-white px-6 py-3 rounded-lg text-sm hover:bg-blue-700 transition shadow-md"
       >
         Ekle
-      </button>
-    </div>
-
-    {/* Alt butonlar */}
-    <div className="flex justify-end gap-5">
-      <button
-        onClick={() => alert("Düzenleme fonksiyonu buraya gelecek")}
-        className="flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg text-sm hover:bg-green-700 transition shadow-md"
-      >
-        <MdEdit />
-        Düzenle
-      </button>
-      <button
-        onClick={() => setModalPost(null)}
-        className="flex items-center gap-2 bg-gray-200 px-6 py-3 rounded-lg hover:bg-gray-300 transition text-sm"
-      >
-        <MdClose />
-        Kapat
       </button>
     </div>
   </Modal>

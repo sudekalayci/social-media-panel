@@ -116,38 +116,46 @@ export default function CalendarComponent() {
         </div>
 
         {/* Görünüm değişim butonları */}
-        <div className="flex gap-4">
-          {[Views.MONTH, Views.WEEK, Views.DAY].map((v) => (
-            <button
-              key={v}
-              onClick={() => changeView(v)}
-              onMouseEnter={() => setHoverView(v)}
-              onMouseLeave={() => setHoverView(null)}
-              className={`${
-                toolbar.view === v
-                  ? "bg-blue-100 border-blue-500 text-blue-700 font-semibold"
-                  : "text-gray-600"
-              } px-6 py-3 rounded-xl transition-all border ${
-                hoverView === v ? "bg-blue-50" : ""
-              }`}
-            >
-              {v.charAt(0).toUpperCase() + v.slice(1)}
-            </button>
-          ))}
-        </div>
+<div className="flex gap-4">
+  {[
+    Views.MONTH,
+    Views.WEEK,
+    Views.DAY
+  ].map((v) => {
+    const viewLabels = {
+      [Views.MONTH]: "Ay",
+      [Views.WEEK]: "Hafta",
+      [Views.DAY]: "Gün",
+    };
+
+    return (
+      <button
+        key={v}
+        onClick={() => changeView(v)}
+        onMouseEnter={() => setHoverView(v)}
+        onMouseLeave={() => setHoverView(null)}
+        className={`${
+          toolbar.view === v
+            ? "bg-blue-100 border-blue-500 text-blue-700 font-semibold"
+            : "text-gray-600"
+        } px-6 py-3 rounded-xl transition-all border ${
+          hoverView === v ? "bg-blue-50" : ""
+        }`}
+      >
+        {viewLabels[v]}
+      </button>
+    );
+  })}
+</div>
       </div>
     );
   }
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-10">
-      <header className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-        <div>
-          <h1 className="text-4xl font-bold text-gray-800">İçerik Takvimi</h1>
-          <p className="text-gray-600 mt-2 text-lg">
-            Planlanmış gönderileri görüntüleme ve yönetme
-          </p>
-        </div>
+      <header className="text-left space-y-2">
+          <h1 className="text-4xl font-bold mb-1">Takvim</h1>
+          <p className="text-gray-600">Tüm sosyal medya gönderilerinizi yönetin</p>
       </header>
 
       <div className="overflow-hidden rounded-xl shadow-md">

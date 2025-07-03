@@ -211,25 +211,37 @@ export default function CalendarComponent() {
           </button>
         </div>
 
-        <div className="flex gap-4">
-          {[Views.MONTH, Views.WEEK, Views.DAY].map((v) => (
-            <button
-              key={v}
-              onClick={() => changeView(v)}
-              onMouseEnter={() => setHoverView(v)}
-              onMouseLeave={() => setHoverView(null)}
-              className={`${
-                toolbar.view === v
-                  ? "bg-blue-100 border-blue-500 text-blue-700 font-semibold"
-                  : "text-gray-600"
-              } px-6 py-3 rounded-xl transition-all border ${
-                hoverView === v ? "bg-blue-50" : ""
-              }`}
-            >
-              {v.charAt(0).toUpperCase() + v.slice(1)}
-            </button>
-          ))}
-        </div>
+<div className="flex gap-4">
+  {[
+    Views.MONTH,
+    Views.WEEK,
+    Views.DAY
+  ].map((v) => {
+    const viewLabels = {
+      [Views.MONTH]: "Ay",
+      [Views.WEEK]: "Hafta",
+      [Views.DAY]: "Gün",
+    };
+
+    return (
+      <button
+        key={v}
+        onClick={() => changeView(v)}
+        onMouseEnter={() => setHoverView(v)}
+        onMouseLeave={() => setHoverView(null)}
+        className={`${
+          toolbar.view === v
+            ? "bg-blue-100 border-blue-500 text-blue-700 font-semibold"
+            : "text-gray-600"
+        } px-6 py-3 rounded-xl transition-all border ${
+          hoverView === v ? "bg-blue-50" : ""
+        }`}
+      >
+        {viewLabels[v]}
+      </button>
+    );
+  })}
+</div>
       </div>
     );
   }

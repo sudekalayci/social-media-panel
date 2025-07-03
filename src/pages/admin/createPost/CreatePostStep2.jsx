@@ -128,20 +128,28 @@ const CreatePostStep2 = ({ formData, setFormData, onBack, onNext }) => {
           />
         </div>
 
-        <div>
-          <label className="block text-gray-700 font-medium mb-1">Fotoğraf/Video Yükle</label>
-          <input
-            type="file"
-            accept="image/*,video/*"
-            onChange={handleFileChange}
-            className="w-full"
-          />
+        <div className="space-y-2">
+          <label className="block text-gray-800 text-sm font-semibold">Fotoğraf / Video Yükle</label>
+          
+          <div className="relative flex items-center justify-center w-full h-10 border-2 border-dashed border-gray-300 rounded-md hover:border-blue-400 transition-colors duration-300 bg-gray-50">
+            <input
+              type="file"
+              accept="image/*,video/*"
+              onChange={handleFileChange}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+            <div className="flex flex-col items-center text-center text-gray-500 pointer-events-none">
+              <span className="text-sm">Dosya seçmek için tıklayın veya sürükleyip bırakın</span>
+            </div>
+          </div>
+
           {localData.media && (
-            <p className="text-sm mt-1 text-gray-600">
-              Seçilen dosya: {localData.media.name}
+            <p className="text-sm text-gray-600">
+              <span className="font-medium text-gray-800">Seçilen dosya:</span> {localData.media.name}
             </p>
           )}
         </div>
+
       </div>
 
       {/* Butonlar */}

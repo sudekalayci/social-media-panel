@@ -5,6 +5,7 @@ import {
   MdDashboard,
   MdPostAdd,
   MdCalendarToday,
+  MdAddCircleOutline,
   MdLogout,
   MdMenu,
   MdClose,
@@ -13,7 +14,7 @@ import { useState } from "react";
 
 const menuItems = [
   { label: "Panel", icon: <MdDashboard />, to: "/customer" },
-  { label: "Gönderi Ekle", icon: <MdPostAdd />, to: "/customer/post" },
+  { label: "Gönderi Ekle", icon: <MdAddCircleOutline />, to: "/customer/post" },
   { label: "Gönderiler", icon: <MdPostAdd />, to: "/customer/posts" },
   { label: "Takvim", icon: <MdCalendarToday />, to: "/customer/calendar" },
 

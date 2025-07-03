@@ -7,7 +7,6 @@ import {
   MdAddCircleOutline,
   MdCalendarToday,
   MdPeople,
-  MdManageAccounts,
   MdLogout,
   MdMenu,
   MdClose
@@ -16,8 +15,8 @@ import { useState } from "react";
 
 const menuItems = [
   { label: "Panel", icon: <MdDashboard />, to: "/admin/dashboard" },
+  { label: "Gönderi Ekle", icon: <MdAddCircleOutline />, to: "/admin/create-post" },
   { label: "Gönderiler", icon: <MdPostAdd />, to: "/admin/posts" },
-  { label: "Gönderi Oluştur", icon: <MdAddCircleOutline />, to: "/admin/create-post" },
   { label: "Takvim", icon: <MdCalendarToday />, to: "/admin/calendar" },
   { label: "Müşteriler", icon: <MdPeople />, to: "/admin/customers" },
 

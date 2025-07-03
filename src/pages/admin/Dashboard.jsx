@@ -72,10 +72,8 @@ const Dashboard = () => {
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-10">
       <header className="text-left space-y-2">
-        <header>
-          <h1 className="text-4xl font-bold mb-1">Hoşgeldin Admin !</h1>
+          <h1 className="text-4xl font-bold mb-1">Panel</h1>
           <p className="text-gray-600">Tüm sosyal medya gönderilerinizi yönetin</p>
-        </header>
       </header>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">

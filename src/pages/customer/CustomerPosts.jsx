@@ -1,194 +1,149 @@
-// Yeni eklemeler ve güncellemelerle tam dosya:
-
-import React, { useEffect, useState } from "react";
-import {
-  FaInstagram,
-  FaLinkedin,
-  FaYoutube,
-  FaXTwitter,
-} from "react-icons/fa6";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const platformIcons = {
-  Instagram: <FaInstagram className="text-pink-500" />,
-  LinkedIn: <FaLinkedin className="text-blue-700" />,
-  YouTube: <FaYoutube className="text-red-600" />,
-  X: <FaXTwitter className="text-black" />,
+  Instagram: <span className="text-pink-500 font-bold"></span>,
+  LinkedIn: <span className="text-blue-700 font-bold"></span>,
+  YouTube: <span className="text-red-600 font-bold"></span>,
+  X: <span className="text-black font-bold"></span>,
 };
 
+const statuses = ["Tümü", "Taslak", "Planlanan", "Yayınlandı"];
+
 export default function CustomerPosts() {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
-  const [comments, setComments] = useState({});
-  const [filters, setFilters] = useState("all");
+
+  // Filtre state'leri
+  const [searchText, setSearchText] = useState("");
+  const [filterStatus, setFilterStatus] = useState("Tümü");
+  const [filterPlatform, setFilterPlatform] = useState("Tümü");
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("posts")) || [];
-    setPosts(saved);
-
-    // Yorumlar
-    const savedComments = JSON.parse(localStorage.getItem("comments")) || {};
-    setComments(savedComments);
+    const storedPosts = JSON.parse(localStorage.getItem("posts")) || [];
+    setPosts(storedPosts);
   }, []);
 
-  const handleCommentSubmit = (postId, text) => {
-    if (!text.trim()) return;
+  
 
-    const newComments = {
-      ...comments,
-      [postId]: [...(comments[postId] || []), text],
-    };
+  // Filtreleme işlemi
+  const filteredPosts = posts.filter((post) => {
+    const matchesSearch =
+      post.title.toLowerCase().includes(searchText.toLowerCase()) ||
+      post.description.toLowerCase().includes(searchText.toLowerCase());
 
-    setComments(newComments);
-    localStorage.setItem("comments", JSON.stringify(newComments));
-  };
+    const matchesStatus = filterStatus === "Tümü" || post.status === filterStatus;
 
-  const filteredPosts =
-    filters === "all"
-      ? posts
-      : posts.filter((p) =>
-          filters === "published"
-            ? p.status === "Yayınlandı"
-            : p.status === "Taslak"
-        );
+    const matchesPlatform =
+      filterPlatform === "Tümü" || post.platforms.includes(filterPlatform);
+
+    return matchesSearch && matchesStatus && matchesPlatform;
+  });
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
-      <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-xl p-6">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
-          Paylaşılan Gönderiler
-        </h1>
-
-        {/* Filtre Butonları */}
-        <div className="flex justify-center gap-4 mb-6">
-          <button
-            onClick={() => setFilters("all")}
-            className={`px-4 py-2 rounded-lg border ${
-              filters === "all"
-                ? "bg-blue-600 text-white"
-                : "bg-white text-gray-700"
-            }`}
+    <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-10">
+      <div className="flex justify-between gap-12">
+         <h1 className="text-4xl font-bold mb-1">Gönderiler</h1>
+        <button
+          onClick={() => navigate("/customer/create-post")}
+           className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl shadow-lg hover:from-indigo-700 hover:to-purple-700 transition"
           >
-            Tümü
+            Gönderi Ekle
           </button>
-          <button
-            onClick={() => setFilters("published")}
-            className={`px-4 py-2 rounded-lg border ${
-              filters === "published"
-                ? "bg-green-600 text-white"
-                : "bg-white text-gray-700"
-            }`}
-          >
-            Yayınlanan
-          </button>
-          <button
-            onClick={() => setFilters("draft")}
-            className={`px-4 py-2 rounded-lg border ${
-              filters === "draft"
-                ? "bg-yellow-500 text-white"
-                : "bg-white text-gray-700"
-            }`}
-          >
-            Taslaklar
-          </button>
-        </div>
-
-        {filteredPosts.length === 0 ? (
-          <p className="text-center text-gray-500">Gösterilecek gönderi yok.</p>
-        ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredPosts.map((post) => (
-              <div
-                key={post.id}
-                className="bg-white border rounded-xl p-4 shadow hover:shadow-lg transition-all"
-              >
-                {post.photo && (
-                  <img
-                    src={post.photo}
-                    alt={post.title}
-                    className="w-full h-48 object-cover rounded-md mb-3"
-                  />
-                )}
-
-                <h2 className="text-xl font-semibold text-gray-800 mb-1">
-                  {post.title}
-                </h2>
-                <p className="text-gray-600 mb-2">{post.description}</p>
-
-                <div className="flex flex-wrap gap-2 mb-2">
-                  {post.platforms.map((p) => (
-                    <span
-                      key={p}
-                      className="flex items-center gap-1 text-sm bg-gray-100 px-2 py-1 rounded-full"
-                    >
-                      {platformIcons[p]}
-                      {p}
-                    </span>
-                  ))}
-                </div>
-
-                {post.tags?.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {post.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs"
-                      >
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                <div className="mt-4">
-                  <p className="text-sm text-gray-500 mb-1">Durum: {post.status}</p>
-
-                  {/* Yorumlar */}
-                  <div className="mt-3">
-                    <h3 className="font-semibold text-gray-700 mb-2">Yorumlar</h3>
-                    <ul className="text-sm space-y-2 mb-2">
-                      {(comments[post.id] || []).map((c, i) => (
-                        <li key={i} className="bg-gray-100 p-2 rounded">
-                          {c}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <CommentInput postId={post.id} onSubmit={handleCommentSubmit} />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
-    </div>
-  );
-}
 
-// Alt bileşen: Yorum giriş alanı
-function CommentInput({ postId, onSubmit }) {
-  const [text, setText] = useState("");
+      {/* Arama ve filtreler */}
+      <div className="flex flex-col sm:flex-row gap-5 mb-8">
+        <input
+          type="text"
+          placeholder="Gönderileri ara..."
+          className="flex-1 border border-gray-200 rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
 
-  const handleSubmit = () => {
-    onSubmit(postId, text);
-    setText("");
-  };
+        <select
+          className="border border-gray-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+        >
+          {statuses.map((status) => (
+            <option key={status} value={status}>
+              {status}
+            </option>
+          ))}
+        </select>
 
-  return (
-    <div className="flex gap-2">
-      <input
-        type="text"
-        placeholder="Yorum ekle..."
-        className="flex-1 border rounded px-3 py-1 text-sm focus:outline-none"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-      />
-      <button
-        onClick={handleSubmit}
-        className="text-sm bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
-      >
-        Gönder
-      </button>
+        <select
+          className="border border-gray-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+          value={filterPlatform}
+          onChange={(e) => setFilterPlatform(e.target.value)}
+        >
+          <option value="Tümü">Tüm Platformlar</option>
+          {Object.keys(platformIcons).map((plat) => (
+            <option key={plat} value={plat}>
+              {plat}
+            </option>
+          ))}
+        </select>
+
+
+      </div>
+
+      {filteredPosts.length === 0 ? (
+        <p className="text-center text-gray-400 mt-20">Gönderi bulunamadı.</p>
+      ) : (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredPosts.map((post) => (
+            <article
+              key={post.id}
+              className="bg-gray-50 rounded-2xl p-5 shadow hover:shadow-lg transition flex flex-col"
+            >
+              <h2 className="text-xl font-semibold mb-3 truncate">{post.title}</h2>
+
+              {post.photo && (
+                <img
+                  src={post.photo}
+                  alt={post.title}
+                  className="w-full h-40 object-cover rounded-lg mb-4"
+                />
+              )}
+
+              <p className="text-gray-700 flex-grow line-clamp-4 mb-4">{post.description}</p>
+
+              <div className="flex flex-wrap gap-2 mb-3">
+                {post.platforms.map((plat) => (
+                  <span
+                    key={plat}
+                    className="text-sm font-medium px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 flex items-center gap-1"
+                  >
+                    {platformIcons[plat]} {plat}
+                  </span>
+                ))}
+              </div>
+
+              <p className="text-sm text-gray-500">
+                Durum: <span className="font-semibold">{post.status}</span>
+              </p>
+
+              <p className="text-sm text-gray-500">
+                Planlanan:{" "}
+                <span className="font-semibold">
+                  {post.scheduledTime
+                    ? new Date(post.scheduledTime).toLocaleString("tr-TR", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })
+                    : "-"}
+                </span>
+              </p>
+            </article>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

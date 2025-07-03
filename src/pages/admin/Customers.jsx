@@ -89,7 +89,10 @@ const Customers = () => {
   return (
       <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-10">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold">Müşteri Yönetimi</h1>
+        <header className="text-left space-y-2">
+          <h1 className="text-4xl font-bold mb-1">Müşteri</h1>
+          <p className="text-gray-600">Tüm sosyal medya gönderilerinizi yönetin</p>
+      </header>
         <button
           onClick={() => {
             setFormData({ name: "", website: "", description: "", socials: [] });

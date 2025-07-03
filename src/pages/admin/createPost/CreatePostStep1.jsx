@@ -3,16 +3,14 @@ import {
   FaInstagram,
   FaLinkedin,
   FaTiktok,
+  FaTwitter,
   FaYoutube,
 } from "react-icons/fa";
 
-const XIcon = () => (
-  <span className="text-black font-bold text-xl select-none">X</span>
-);
 
 const platformIcons = {
   Instagram: <FaInstagram className="text-pink-500 text-xl" />,
-  X: <XIcon />,  // Burada Twitter yerine XIcon kullanıldı
+  Twitter: <FaTwitter className="text-blue-700 text-xl" />,
   LinkedIn: <FaLinkedin className="text-blue-700 text-xl" />,
   TikTok: <FaTiktok className="text-black text-xl" />,
   YouTube: <FaYoutube className="text-red-600 text-xl" />,
@@ -21,7 +19,7 @@ const platformIcons = {
 const platforms = [
   "Instagram",
   "LinkedIn",
-  "X",
+  "Twitter",
   "TikTok",
   "YouTube",
 ];
@@ -86,14 +84,12 @@ const CreatePostStep1 = ({ onNext }) => {
     connectedAccounts.some((acc) => acc.platform === platform);
 
   return (
-    <div className="max-w-7xl mx-auto bg-white rounded-xl space-y-8 ">
+    <div>
       {/* Başlık */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Yeni Yazı Oluştur</h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Birden fazla sosyal medya platformunda içerik oluşturun ve planlayın.
-        </p>
-      </div>
+      <header className="text-left space-y-2 mb-4">
+        <h1 className="text-4xl font-bold mb-1">Gönderi Ekle</h1>
+        <p className="text-gray-600">Tüm sosyal medya gönderilerinizi yönetin</p>
+      </header>
 
       {/* Adım Göstergesi */}
       <div className="flex justify-between items-center">
@@ -159,20 +155,22 @@ const CreatePostStep1 = ({ onNext }) => {
                 key={platform}
                 className="border border-gray-200 rounded-xl p-4 bg-white shadow-sm space-y-3"
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 font-medium text-gray-700">
-                    {icon}
-                    <span>{platform}</span>
-                  </div>
-                  {connected && (
-                    <button
-                      onClick={() => handleDisconnect(platform)}
-                      className="text-sm text-red-500 hover:underline"
-                    >
-                      Ayır
-                    </button>
-                  )}
+                <div className="flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm hover:shadow transition">
+                <div className="flex items-center gap-2 font-medium text-gray-700">
+                  <div className="text-xl">{icon}</div>
+                  <span className="text-base">{platform}</span>
                 </div>
+
+                {connected && (
+                  <button
+                    onClick={() => handleDisconnect(platform)}
+                    className="text-sm text-red-600 font-semibold hover:underline"
+                  >
+                    Ayır
+                  </button>
+                )}
+              </div>
+
 
                 {connected ? (
                   <div className="text-sm">

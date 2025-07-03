@@ -137,7 +137,7 @@ const CreatePostStep3 = ({ formData, setFormData, onBack, onNext }) => {
 
           {/* Canlı Önizleme */}
           <div>
-            <label className="block text-gray-700 font-medium mb-2 ml-4">Canlı Önizleme</label>
+            
             <div className="rounded border border-gray-200 shadow-sm max-w-sm mx-auto bg-white">
               <div className="flex items-center gap-2 px-4 py-3">
                 <FaUserCircle className="text-2xl text-gray-500" />

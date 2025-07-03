@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import {
   FaInstagram,
-  FaTwitter,
   FaLinkedin,
   FaTiktok,
+  FaTwitter,
   FaYoutube,
 } from "react-icons/fa";
-import { RxTwitterLogo } from "react-icons/rx";
 import { v4 as uuidv4 } from "uuid";
 
 const platforms = [
   { name: "Instagram", icon: <FaInstagram className="text-pink-500" />, colorClass: "text-pink-600" },
-  { name: "Twitter", icon: <RxTwitterLogo className="text-blue-400" />, colorClass: "text-blue-600" },
+  { name: "Twitter", icon: <FaTwitter className="text-blue-400" />, colorClass: "text-blue-400" },
   { name: "LinkedIn", icon: <FaLinkedin className="text-blue-700" />, colorClass: "text-blue-800" },
   { name: "TikTok", icon: <FaTiktok className="text-black" />, colorClass: "text-gray-800" },
   { name: "YouTube", icon: <FaYoutube className="text-red-600" />, colorClass: "text-red-700" },
@@ -23,6 +22,7 @@ export default function CustomerPost() {
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState(null);
   const [error, setError] = useState("");
+  const [scheduledDate, setScheduledDate] = useState("");
 
   const togglePlatform = (name) => {
     setSelectedPlatforms((prev) =>
@@ -45,21 +45,25 @@ export default function CustomerPost() {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = () => {
+  const validateBasic = () => {
     if (!title.trim()) {
       setError("Lütfen başlık girin.");
-      return;
+      return false;
     }
     if (!description.trim()) {
       setError("Lütfen açıklama girin.");
-      return;
+      return false;
     }
     if (selectedPlatforms.length === 0) {
       setError("Lütfen en az bir platform seçin.");
-      return;
+      return false;
     }
-
     setError("");
+    return true;
+  };
+
+  const handleSubmit = () => {
+    if (!validateBasic()) return;
 
     const newPost = {
       id: uuidv4(),
@@ -71,30 +75,74 @@ export default function CustomerPost() {
       status: "Yayınlandı",
     };
 
+    savePost(newPost, "Gönderiniz admin'e ve gönderiler sayfasına iletildi!");
+  };
+
+  const handleSaveDraft = () => {
+    if (!title.trim() && !description.trim() && !photo && selectedPlatforms.length === 0) {
+      setError("Boş bir taslak kaydedilemez.");
+      return;
+    }
+    setError("");
+
+    const draftPost = {
+      id: uuidv4(),
+      title,
+      description,
+      photo,
+      platforms: selectedPlatforms,
+      date: new Date().toISOString(),
+      status: "Taslak",
+    };
+
+    savePost(draftPost, "Taslak olarak kaydedildi!");
+  };
+
+  const handlePlan = () => {
+    if (!validateBasic()) return;
+    if (!scheduledDate) {
+      setError("Lütfen planlama tarihi seçin.");
+      return;
+    }
+    setError("");
+
+    const plannedPost = {
+      id: uuidv4(),
+      title,
+      description,
+      photo,
+      platforms: selectedPlatforms,
+      date: new Date().toISOString(),
+      scheduledDate, // Planlanan tarih
+      status: "Planlandı",
+    };
+
+    savePost(plannedPost, "Gönderiniz planlandı!");
+  };
+
+  const savePost = (post, alertMsg) => {
     const existingPosts = JSON.parse(localStorage.getItem("posts")) || [];
-    const updatedPosts = [...existingPosts, newPost];
+    const updatedPosts = [...existingPosts, post];
     localStorage.setItem("posts", JSON.stringify(updatedPosts));
 
-    console.log("Admin'e iletilen veri:", newPost);
-    alert("Gönderiniz admin'e ve gönderiler sayfasına iletildi!");
+    alert(alertMsg);
 
+    // Formu temizle
     setTitle("");
     setDescription("");
     setPhoto(null);
     setSelectedPlatforms([]);
+    setScheduledDate("");
+    setError("");
   };
 
   return (
-    <div className="max-w-5xl mx-auto bg-white p-6 rounded-xl shadow-md flex flex-col md:flex-row gap-10">
-      {/* Sol: Form */}
-      <div className="flex-1 space-y-6">
-        <h1 className="text-3xl font-bold text-gray-800">
-          Gönderi Oluştur & Platform Seç
-        </h1>
-        <p className="text-gray-600">
-          İçeriğin başlığını, açıklamasını yazın, fotoğraf ekleyin ve paylaşmak
-          istediğiniz sosyal medya platformlarını seçin.
-        </p>
+    <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-10">
+      <div>
+        <header className="text-left space-y-2 mb-4">
+          <h1 className="text-4xl font-bold mb-1">Gönderi Ekle</h1>
+          <p className="text-gray-600">Tüm sosyal medya gönderilerinizi yönetin</p>
+        </header>
 
         <div>
           <label className="block mb-1 font-semibold text-gray-700">Başlık</label>
@@ -118,14 +166,27 @@ export default function CustomerPost() {
           />
         </div>
 
-        <div>
-          <label className="block mb-1 font-semibold text-gray-700">Fotoğraf Yükle</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handlePhotoChange}
-            className="block w-full"
-          />
+        <div className="space-y-2">
+          <label className="block text-gray-800 text-sm font-semibold">Fotoğraf Yükle</label>
+
+          <div className="relative flex items-center justify-center w-full h-12 border-2 border-dashed border-gray-300 rounded-md bg-gray-50 hover:border-blue-400 transition-colors duration-300">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handlePhotoChange}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+            <div className="flex flex-col items-center text-center text-gray-500 pointer-events-none">
+              <span className="text-sm">Fotoğraf seçmek için tıklayın veya sürükleyip bırakın</span>
+            </div>
+          </div>
+
+          {photo && (
+            <div className="text-sm text-gray-600">
+              <span className="font-medium text-gray-800">Seçilen dosya:</span>{" "}
+              <span className="break-all">Fotoğraf yüklendi</span>
+            </div>
+          )}
         </div>
 
         <div>
@@ -150,14 +211,40 @@ export default function CustomerPost() {
           </div>
         </div>
 
-        {error && <p className="text-red-600 font-semibold">{error}</p>}
+        <div className="mt-4">
+          <label className="block mb-1 font-semibold text-gray-700">Planlama Tarihi</label>
+          <input
+            type="datetime-local"
+            value={scheduledDate}
+            onChange={(e) => setScheduledDate(e.target.value)}
+            className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
 
-        <button
-          onClick={handleSubmit}
-          className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition"
-        >
-          Gönder
-        </button>
+        {error && <p className="text-red-600 font-semibold mt-2">{error}</p>}
+
+        <div className="mt-6 flex gap-4">
+          <button
+            onClick={handleSubmit}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition"
+          >
+            Gönder
+          </button>
+
+          <button
+            onClick={handleSaveDraft}
+            className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold transition"
+          >
+            Taslak Olarak Kaydet
+          </button>
+
+          <button
+            onClick={handlePlan}
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition"
+          >
+            Planla
+          </button>
+        </div>
       </div>
 
       {/* Sağ: Önizleme */}
