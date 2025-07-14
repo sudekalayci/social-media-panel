@@ -25,6 +25,7 @@ npm run build
 ## Demo Giriş Bilgileri
 
 - E-posta: superadmin@gmail.com
+- E-posta: customer@gmail.com
 - Şifre: demo123
 
 
